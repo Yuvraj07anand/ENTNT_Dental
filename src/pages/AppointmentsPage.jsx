@@ -106,7 +106,8 @@ const AppointmentsPage = () => {
 
   return (
     <div>
-      <div className="flex justify-between items-center mb-6">
+      {/* header area with heading and buton  */}
+      <div className="flex flex-wrap justify-between items-center gap-4 mb-6">
         <h1 className="text-2xl font-bold text-black px-2">Appointment Management</h1>
         <button
           onClick={handleAddAppointment}
@@ -143,14 +144,14 @@ const AppointmentsPage = () => {
         )}
       </div>
 
-      {/* opening the modle to view thee attachments */}
-     {isModalOpen && selectedFiles.length > 0 && (
-  <ViewAttachmentModal 
-    isOpen={true}          
-    files={selectedFiles}
-    onClose={closeAttachmentModal}
-  />
-)}
+      {/* view the attachment modal  */}
+      {isModalOpen && selectedFiles.length > 0 && (
+        <ViewAttachmentModal 
+          isOpen={true}
+          files={selectedFiles}
+          onClose={closeAttachmentModal}
+        />
+      )}
     </div>
   );
 };

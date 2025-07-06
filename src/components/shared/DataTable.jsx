@@ -22,57 +22,33 @@ const DataTable = ({ columns, data, onEdit, onDelete }) => {
 
   return (
     <div className="overflow-x-auto">
-      <table className="w-full text-sm">
-        <thead className="bg-gray-50">
+      <table className="w-full table-auto text-sm text-left text-gray-700 border-collapse">
+        <thead className="bg-gray-100 text-gray-700 uppercase">
           <tr>
             {columns.map((column) => (
-              <th 
-                key={column.key} 
-                scope="col"
-                className="px-2 py-2 text-left text-xs font-medium text-gray-500 uppercase tracking-wider cursor-pointer whitespace-nowrap"
+              <th
+                key={column.key}
                 onClick={() => handleSort(column.key)}
+                className="px-4 py-2 font-medium cursor-pointer whitespace-nowrap"
               >
                 <div className="flex items-center">
                   {column.label}
                   {sortConfig.key === column.key && (
-                    <span className="ml-1">
-                      {sortConfig.direction === 'asc' ? '↑' : '↓'}
-                    </span>
+                    <span className="ml-1">{sortConfig.direction === 'asc' ? '↑' : '↓'}</span>
                   )}
                 </div>
               </th>
             ))}
-            <th scope="col" className="px-2 py-2 text-right text-xs text-gray-500 uppercase">
-              Actions
-            </th>
           </tr>
         </thead>
-        <tbody className="bg-white divide-y divide-gray-200">
+        <tbody>
           {sortedData.map((item) => (
-            <tr key={item.id} className="hover:bg-gray-50 text-black">
+            <tr key={item.id} className="hover:bg-gray-50">
               {columns.map((column) => (
-                <td key={`${item.id}-${column.key}`} className="px-2 py-2 whitespace-nowrap">
+                <td key={`${item.id}-${column.key}`} className="px-4 py-2 whitespace-nowrap">
                   {column.render ? column.render(item) : item[column.key]}
                 </td>
               ))}
-              <td className="px-2 py-2 whitespace-nowrap text-right">
-                {onEdit && (
-                  <button
-                    onClick={() => onEdit(item)}
-                    className="text-indigo-600 hover:text-indigo-900 mr-2 text-sm"
-                  >
-                    Edit
-                  </button>
-                )}
-                {onDelete && (
-                  <button
-                    onClick={() => onDelete(item)}
-                    className="text-red-600 hover:text-red-900 text-sm"
-                  >
-                    Delete
-                  </button>
-                )}
-              </td>
             </tr>
           ))}
         </tbody>
