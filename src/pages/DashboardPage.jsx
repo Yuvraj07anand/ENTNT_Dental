@@ -81,7 +81,7 @@ const DashboardPage = () => {
               {patients.slice(0, 5).map(patient => (
                 <div key={patient.id} className="flex items-center justify-between border-b pb-3 last:border-0 last:pb-0">
                   <div>
-                    <p className="font-medium">{patient.name}</p>
+                    <p className="font-medium text-black">{patient.name}</p>
                     <p className="text-sm text-gray-500">{patient.contact}</p>
                   </div>
                   <div className="text-sm text-gray-500">
