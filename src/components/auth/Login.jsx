@@ -110,7 +110,7 @@ const Login = () => {
           <span className="font-semibold">Admin:</span> admin@entnt.in / admin123
         </p>
         <p className="mt-1">
-          <span className="font-semibold">Patient:</span> john@entnt.in / patient123
+          <span className="font-semibold">Patient:</span> patient@entnt.in / patient123
         </p>
       </div>
     </div>

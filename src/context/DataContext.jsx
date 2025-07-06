@@ -19,24 +19,14 @@ export function DataProvider({ children }) {
         {
           id: 'p1',
           name: 'John Doe',
+          email: 'john@example.com',
+          password: '123456',
           dob: '1990-05-10',
           contact: '1234567890',
           healthInfo: 'No allergies'
         }
       ],
-      incidents: [
-        {
-          id: 'i1',
-          patientId: 'p1',
-          title: 'Toothache',
-          description: 'Upper molar pain',
-          comments: 'Sensitive to cold',
-          appointmentDate: new Date().toISOString(),
-          cost: 80,
-          status: 'Completed',
-          files: []
-        }
-      ]
+      incidents: []
     };
 
     localStorage.setItem('dentalData', JSON.stringify(data));
@@ -45,12 +35,19 @@ export function DataProvider({ children }) {
     setLoading(false);
   }, []);
 
-  // Patient CRUD operations
   const addPatient = (patientData) => {
     const data = JSON.parse(localStorage.getItem('dentalData'));
+    
+    // ✅ Email check
+    const existingEmail = data.patients.find(p => p.email === patientData.email);
+    if (existingEmail) {
+      throw new Error('Email already exists');
+    }
+
     const newPatientId = `p${Date.now()}`;
     const newPatient = { ...patientData, id: newPatientId };
     const newPatients = [...data.patients, newPatient];
+
     updateStorage({ ...data, patients: newPatients });
     return newPatientId;
   };
@@ -69,6 +66,7 @@ export function DataProvider({ children }) {
     const newIncidents = data.incidents.filter(i => i.patientId !== id);
     updateStorage({ ...data, patients: newPatients, incidents: newIncidents });
   };
+
   const addIncident = (incident) => {
     const data = JSON.parse(localStorage.getItem('dentalData'));
     const newIncidentId = `i${Date.now()}`;
@@ -102,7 +100,7 @@ export function DataProvider({ children }) {
         deletePatient,
         addIncident,
         updateIncident,
-        deleteIncident   // ✅ Make sure this is exported
+        deleteIncident
       }}
     >
       {!loading && children}

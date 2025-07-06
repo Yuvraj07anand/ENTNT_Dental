@@ -14,7 +14,7 @@ const PatientForm = ({ initialData, onSubmit, onCancel }) => {
   });
 
   const [errors, setErrors] = useState({});
-  const { addPatient } = useData();
+  const { addPatient, patients } = useData();
   const { registerUser } = useAuth();
   const navigate = useNavigate();
 
@@ -55,25 +55,46 @@ const PatientForm = ({ initialData, onSubmit, onCancel }) => {
   const handleSubmit = (e) => {
     e.preventDefault();
     if (validate()) {
-      if (initialData) {
-        onSubmit && onSubmit(formData);
-      } else {
-        const patientId = addPatient(formData);
-        registerUser({
-          email: formData.email,
-          password: formData.password,
-          role: 'Patient',
-          patientId
-        });
-        onSubmit && onSubmit({ ...formData, id: patientId });
+      const lowerEmail = formData.email.toLowerCase();
+
+      // ✅ Block hardcoded admin/patient emails
+      if (!initialData && (lowerEmail === 'admin@entnt.in' || lowerEmail === 'patient@entnt.in')) {
+        alert('This email is reserved and cannot be used.');
+        return;
       }
-      navigate('/patients');
+
+      // ✅ Check for duplicate patient emails
+      const emailExists = patients.some(
+        (p) => p.email?.toLowerCase() === lowerEmail
+      );
+      if (!initialData && emailExists) {
+        alert('A patient with this email already exists.');
+        return;
+      }
+
+      try {
+        if (!initialData) {
+          const patientId = addPatient(formData);
+          registerUser({
+            email: formData.email,
+            password: formData.password,
+            role: 'Patient',
+            patientId
+          });
+          onSubmit && onSubmit({ ...formData, id: patientId });
+        } else {
+          onSubmit && onSubmit(formData);
+        }
+        navigate('/patients');
+      } catch (error) {
+        console.error(error);
+      }
     }
   };
 
   return (
     <form onSubmit={handleSubmit} className="space-y-6 bg-white p-4 rounded shadow-md">
-      {/* name part  */}
+      {/* Full Name */}
       <div>
         <label htmlFor="name" className="block text-sm font-medium text-gray-700">
           Full Name
@@ -91,7 +112,7 @@ const PatientForm = ({ initialData, onSubmit, onCancel }) => {
         {errors.name && <p className="mt-1 text-sm text-red-600">{errors.name}</p>}
       </div>
 
-      {/* date o f  birth section */}
+      {/* DOB */}
       <div>
         <label htmlFor="dob" className="block text-sm font-medium text-gray-700">
           Date of Birth
@@ -109,7 +130,7 @@ const PatientForm = ({ initialData, onSubmit, onCancel }) => {
         {errors.dob && <p className="mt-1 text-sm text-red-600">{errors.dob}</p>}
       </div>
 
-      {/* contacts  */}
+      {/* Contact */}
       <div>
         <label htmlFor="contact" className="block text-sm font-medium text-gray-700">
           Contact Information
@@ -175,7 +196,7 @@ const PatientForm = ({ initialData, onSubmit, onCancel }) => {
         )}
       </div>
 
-      {/* heatlth informations  */}
+      {/* Health Info */}
       <div>
         <label htmlFor="healthInfo" className="block text-sm font-medium text-gray-700">
           Health Information
@@ -190,7 +211,7 @@ const PatientForm = ({ initialData, onSubmit, onCancel }) => {
         />
       </div>
 
-      {/* buttons  */}
+      {/* Buttons */}
       <div className="flex justify-end space-x-3">
         {onCancel && (
           <button

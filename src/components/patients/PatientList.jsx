@@ -62,7 +62,8 @@ const PatientList = ({ patients, onEdit, onDelete }) => {
             to="/patients/new"
             className="px-4 py-2 bg-blue-800 text-white rounded-md hover:bg-blue-700 transition text-center"
           >
-            Add New Patient
+            <span className='text-white'>Add New Patient</span>
+            
           </Link>
         </div>
       </div>
