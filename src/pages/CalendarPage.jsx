@@ -73,7 +73,7 @@ const CalendarPage = () => {
           />
         </div>
 
-        {/* Appointment Details Section */}
+        {/* appointment details section */}
         <div className="bg-white rounded-lg shadow p-4 sm:p-6 w-full lg:w-1/3">
           <h2 className="text-lg sm:text-xl font-bold mb-3 sm:mb-4 text-center sm:text-left">
             {selectedDate
