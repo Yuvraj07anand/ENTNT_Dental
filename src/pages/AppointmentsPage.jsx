@@ -2,11 +2,25 @@ import { useState } from 'react';
 import { useData } from '../context/DataContext';
 import DataTable from '../components/shared/DataTable';
 import AppointmentForm from '../components/appointments/AppointmentForm';
+import ViewAttachmentModal from '../components/appointments/ViewAttachmentsModal'; 
 
 const AppointmentsPage = () => {
   const { incidents, patients, addIncident, updateIncident, deleteIncident } = useData();
   const [editingAppointment, setEditingAppointment] = useState(null);
   const [isAdding, setIsAdding] = useState(false);
+
+  const [selectedFile, setSelectedFile] = useState(null);
+  const [isModalOpen, setIsModalOpen] = useState(false);
+
+  const openAttachment = (file) => {
+    setSelectedFile(file);
+    setIsModalOpen(true);
+  };
+
+  const closeAttachment = () => {
+    setSelectedFile(null);
+    setIsModalOpen(false);
+  };
 
   const enhancedIncidents = incidents.map(incident => ({
     ...incident,
@@ -47,8 +61,8 @@ const AppointmentsPage = () => {
   const columns = [
     { key: 'title', label: 'Title' },
     { key: 'patientName', label: 'Patient' },
-    { 
-      key: 'appointmentDate', 
+    {
+      key: 'appointmentDate',
       label: 'Date & Time',
       render: (item) => new Date(item.appointmentDate).toLocaleString()
     },
@@ -58,19 +72,45 @@ const AppointmentsPage = () => {
       label: 'Cost',
       render: (item) => item.cost ? `$${item.cost.toFixed(2)}` : '-'
     },
-    { 
-      key: 'status', 
+    {
+      key: 'status',
       label: 'Status',
       render: (item) => (
         <span className={`px-2 py-1 text-xs rounded-full ${
-          item.status === 'Completed' 
-            ? 'bg-green-100 text-green-800' 
+          item.status === 'Completed'
+            ? 'bg-green-100 text-green-800'
             : item.status === 'Cancelled'
               ? 'bg-red-100 text-red-800'
               : 'bg-blue-100 text-blue-800'
         }`}>
           {item.status}
         </span>
+      )
+    },
+    {
+      key: 'attachments',
+      label: 'Attachments',
+      render: (item) => item.files && item.files.length > 0 ? (
+        <div className="flex gap-2 flex-wrap">
+          {item.files.map((file, index) => (
+            <div
+              key={index}
+              className="cursor-pointer"
+              onClick={() => openAttachment(file)}
+              title={file.name}
+            >
+              {file.type === 'image' ? (
+                <img src={file.url} alt="attachment" className="w-12 h-12 object-cover rounded border" />
+              ) : (
+                <div className="w-12 h-12 flex items-center justify-center bg-gray-100 text-sm rounded border">
+                  📄
+                </div>
+              )}
+            </div>
+          ))}
+        </div>
+      ) : (
+        <span className="text-gray-400">No files</span>
       )
     }
   ];
@@ -92,20 +132,20 @@ const AppointmentsPage = () => {
           <h2 className="text-xl font-bold mb-6">
             {editingAppointment ? 'Edit Appointment' : 'Add New Appointment'}
           </h2>
-          <AppointmentForm 
+          <AppointmentForm
             patients={patients}
-            initialData={editingAppointment} 
-            onSubmit={handleSaveAppointment} 
+            initialData={editingAppointment}
+            onSubmit={handleSaveAppointment}
             onCancel={handleCancel}
           />
         </div>
       )}
-      
+
       <div className="bg-white rounded-lg shadow p-6">
         {enhancedIncidents.length > 0 ? (
-          <DataTable 
-            columns={columns} 
-            data={enhancedIncidents} 
+          <DataTable
+            columns={columns}
+            data={enhancedIncidents}
             onEdit={handleEditAppointment}
             onDelete={handleDeleteAppointment}
           />
@@ -113,6 +153,11 @@ const AppointmentsPage = () => {
           <p className="text-gray-500 text-center py-8">No appointments found</p>
         )}
       </div>
+
+      {/* Modal to view attachments */}
+      {isModalOpen && selectedFile && (
+        <ViewAttachmentModal file={selectedFile} onClose={closeAttachment} />
+      )}
     </div>
   );
 };

@@ -161,33 +161,32 @@ const AppointmentForm = ({ patients, initialData, onSubmit, onCancel }) => {
             onChange={handleChange}
             className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 bg-white text-gray-800"
           >
-            <option value="Scheduled" className="text-gray-800">Scheduled</option>
-            <option value="In Progress" className="text-gray-800">In Progress</option>
-            <option value="Completed" className="text-gray-800">Completed</option>
-            <option value="Cancelled" className="text-gray-800">Cancelled</option>
+            <option value="Scheduled">Scheduled</option>
+            <option value="In Progress">In Progress</option>
+            <option value="Completed">Completed</option>
+            <option value="Cancelled">Cancelled</option>
           </select>
         </div>
 
-        {formData.status === 'Completed' && (
-          <div className="mb-4">
-            <label htmlFor="cost" className="block text-sm font-medium text-gray-700 mb-1">
-              Cost ($)
-            </label>
-            <input
-              type="number"
-              id="cost"
-              name="cost"
-              value={formData.cost}
-              onChange={handleChange}
-              min="0"
-              step="0.01"
-              className={`mt-1 block w-full px-3 py-2 border ${
-                errors.cost ? 'border-red-500' : 'border-gray-300'
-              } rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 bg-white text-gray-800`}
-            />
-            {errors.cost && <p className="mt-1 text-sm text-red-600">{errors.cost}</p>}
-          </div>
-        )}
+        {/* Cost Field (Always Visible Now) */}
+        <div className="mb-4">
+          <label htmlFor="cost" className="block text-sm font-medium text-gray-700 mb-1">
+            Cost ($)
+          </label>
+          <input
+            type="number"
+            id="cost"
+            name="cost"
+            value={formData.cost}
+            onChange={handleChange}
+            min="0"
+            step="0.01"
+            className={`mt-1 block w-full px-3 py-2 border ${
+              errors.cost ? 'border-red-500' : 'border-gray-300'
+            } rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 bg-white text-gray-800`}
+          />
+          {errors.cost && <p className="mt-1 text-sm text-red-600">{errors.cost}</p>}
+        </div>
 
         <div>
           <label htmlFor="comments" className="block text-sm font-medium text-gray-700 mb-1">
@@ -204,7 +203,7 @@ const AppointmentForm = ({ patients, initialData, onSubmit, onCancel }) => {
         </div>
       </div>
 
-      {/* Attachments Section */}
+      {/* Attachments */}
       <div className="bg-white p-4 rounded-lg shadow">
         <label className="block text-sm font-medium text-gray-700 mb-2">
           Attachments
