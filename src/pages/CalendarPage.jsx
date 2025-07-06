@@ -6,12 +6,13 @@ import DataTable from '../components/shared/DataTable';
 const CalendarPage = () => {
   const { incidents, patients } = useData();
   const [selectedDate, setSelectedDate] = useState(null);
+
   const enhancedIncidents = incidents.map(incident => ({
     ...incident,
     patientName: patients.find(p => p.id === incident.patientId)?.name || 'Unknown'
-  })); 
-  // get appointments details on the date when selected 
-  const dayAppointments = selectedDate 
+  }));
+
+  const dayAppointments = selectedDate
     ? enhancedIncidents.filter(i => {
         const appDate = new Date(i.appointmentDate);
         return (
@@ -29,22 +30,28 @@ const CalendarPage = () => {
   const columns = [
     { key: 'title', label: 'Title' },
     { key: 'patientName', label: 'Patient' },
-    { 
-      key: 'appointmentDate', 
+    {
+      key: 'appointmentDate',
       label: 'Time',
-      render: (item) => new Date(item.appointmentDate).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })
+      render: (item) =>
+        new Date(item.appointmentDate).toLocaleTimeString([], {
+          hour: '2-digit',
+          minute: '2-digit'
+        })
     },
-    { 
-      key: 'status', 
+    {
+      key: 'status',
       label: 'Status',
       render: (item) => (
-        <span className={`px-2 py-1 text-xs rounded-full ${
-          item.status === 'Completed' 
-            ? 'bg-green-100 text-green-800' 
-            : item.status === 'Cancelled'
+        <span
+          className={`px-2 py-1 text-xs rounded-full ${
+            item.status === 'Completed'
+              ? 'bg-green-100 text-green-800'
+              : item.status === 'Cancelled'
               ? 'bg-red-100 text-red-800'
               : 'bg-blue-100 text-blue-800'
-        }`}>
+          }`}
+        >
           {item.status}
         </span>
       )
@@ -52,33 +59,38 @@ const CalendarPage = () => {
   ];
 
   return (
-    <div>
-      <h1 className="text-2xl font-bold mb-6">Appointment Calendar</h1>
-      
-      <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-        <div className="lg:col-span-2">
-          <CalendarView 
-            appointments={enhancedIncidents} 
-            onDaySelect={handleDaySelect} 
+    <div className="p-4 sm:p-6">
+      <h1 className="text-2xl font-bold mb-4 sm:mb-6 text-center sm:text-left px-2 text-black">
+        Appointment Calendar
+      </h1>
+
+      <div className="flex flex-col lg:flex-row gap-6">
+        {/* this is calendar section */}
+        <div className="lg:w-2/3">
+          <CalendarView
+            appointments={enhancedIncidents}
+            onDaySelect={handleDaySelect}
           />
         </div>
-        
-        <div className="bg-white rounded-lg shadow p-6">
-          <h2 className="text-xl font-bold mb-4">
-            {selectedDate ? `Appointments on ${selectedDate.toLocaleDateString()}` : 'Select a date'}
+
+        {/* Appointment Details Section */}
+        <div className="bg-white rounded-lg shadow p-4 sm:p-6 w-full lg:w-1/3">
+          <h2 className="text-lg sm:text-xl font-bold mb-3 sm:mb-4 text-center sm:text-left">
+            {selectedDate
+              ? `Appointments on ${selectedDate.toLocaleDateString()}`
+              : 'Select a date'}
           </h2>
-          
+
           {selectedDate ? (
             dayAppointments.length > 0 ? (
-              <DataTable 
-                columns={columns} 
-                data={dayAppointments} 
-              />
+              <DataTable columns={columns} data={dayAppointments} />
             ) : (
-              <p className="text-gray-500">No appointments scheduled for this day</p>
+              <p className="text-gray-800 text-center">No appointments scheduled for this day</p>
             )
           ) : (
-            <p className="text-gray-500">Select a date from the calendar to view appointments</p>
+            <p className="text-gray-800 text-center">
+              Select a date from the calendar to view appointments
+            </p>
           )}
         </div>
       </div>
