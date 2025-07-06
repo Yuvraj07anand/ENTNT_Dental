@@ -69,8 +69,6 @@ export function DataProvider({ children }) {
     const newIncidents = data.incidents.filter(i => i.patientId !== id);
     updateStorage({ ...data, patients: newPatients, incidents: newIncidents });
   };
-
-  // crud actions 
   const addIncident = (incident) => {
     const data = JSON.parse(localStorage.getItem('dentalData'));
     const newIncidentId = `i${Date.now()}`;
@@ -87,17 +85,26 @@ export function DataProvider({ children }) {
     updateStorage({ ...data, incidents: newIncidents });
   };
 
+  const deleteIncident = (id) => {
+    const data = JSON.parse(localStorage.getItem('dentalData'));
+    const newIncidents = data.incidents.filter(i => i.id !== id);
+    updateStorage({ ...data, incidents: newIncidents });
+  };
+
   return (
-    <DataContext.Provider value={{
-      patients,
-      incidents,
-      loading,
-      addPatient,
-      updatePatient,
-      deletePatient,
-      addIncident,
-      updateIncident
-    }}>
+    <DataContext.Provider
+      value={{
+        patients,
+        incidents,
+        loading,
+        addPatient,
+        updatePatient,
+        deletePatient,
+        addIncident,
+        updateIncident,
+        deleteIncident   // ✅ Make sure this is exported
+      }}
+    >
       {!loading && children}
     </DataContext.Provider>
   );

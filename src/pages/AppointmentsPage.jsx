@@ -2,23 +2,23 @@ import { useState } from 'react';
 import { useData } from '../context/DataContext';
 import DataTable from '../components/shared/DataTable';
 import AppointmentForm from '../components/appointments/AppointmentForm';
-import ViewAttachmentModal from '../components/appointments/ViewAttachmentsModal'; 
+import ViewAttachmentModal from '../components/appointments/ViewAttachmentsModal';
 
 const AppointmentsPage = () => {
   const { incidents, patients, addIncident, updateIncident, deleteIncident } = useData();
   const [editingAppointment, setEditingAppointment] = useState(null);
   const [isAdding, setIsAdding] = useState(false);
 
-  const [selectedFile, setSelectedFile] = useState(null);
+  const [selectedFiles, setSelectedFiles] = useState([]);
   const [isModalOpen, setIsModalOpen] = useState(false);
 
-  const openAttachment = (file) => {
-    setSelectedFile(file);
+  const openAttachmentModal = (files) => {
+    setSelectedFiles(files);
     setIsModalOpen(true);
   };
 
-  const closeAttachment = () => {
-    setSelectedFile(null);
+  const closeAttachmentModal = () => {
+    setSelectedFiles([]);
     setIsModalOpen(false);
   };
 
@@ -90,28 +90,17 @@ const AppointmentsPage = () => {
     {
       key: 'attachments',
       label: 'Attachments',
-      render: (item) => item.files && item.files.length > 0 ? (
-        <div className="flex gap-2 flex-wrap">
-          {item.files.map((file, index) => (
-            <div
-              key={index}
-              className="cursor-pointer"
-              onClick={() => openAttachment(file)}
-              title={file.name}
-            >
-              {file.type === 'image' ? (
-                <img src={file.url} alt="attachment" className="w-12 h-12 object-cover rounded border" />
-              ) : (
-                <div className="w-12 h-12 flex items-center justify-center bg-gray-100 text-sm rounded border">
-                  📄
-                </div>
-              )}
-            </div>
-          ))}
-        </div>
-      ) : (
-        <span className="text-gray-400">No files</span>
-      )
+      render: (item) =>
+        item.files && item.files.length > 0 ? (
+          <button
+            onClick={() => openAttachmentModal(item.files)}
+            className="text-blue-600 hover:underline text-sm"
+          >
+            View ({item.files.length})
+          </button>
+        ) : (
+          <span className="text-gray-400 text-sm">No files</span>
+        )
     }
   ];
 
@@ -154,10 +143,14 @@ const AppointmentsPage = () => {
         )}
       </div>
 
-      {/* Modal to view attachments */}
-      {isModalOpen && selectedFile && (
-        <ViewAttachmentModal file={selectedFile} onClose={closeAttachment} />
-      )}
+      {/* opening the modle to view thee attachments */}
+     {isModalOpen && selectedFiles.length > 0 && (
+  <ViewAttachmentModal 
+    isOpen={true}          
+    files={selectedFiles}
+    onClose={closeAttachmentModal}
+  />
+)}
     </div>
   );
 };

@@ -22,14 +22,14 @@ const DataTable = ({ columns, data, onEdit, onDelete }) => {
 
   return (
     <div className="overflow-x-auto">
-      <table className="min-w-full divide-y divide-gray-200">
+      <table className="w-full text-sm">
         <thead className="bg-gray-50">
           <tr>
             {columns.map((column) => (
               <th 
                 key={column.key} 
                 scope="col"
-                className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider cursor-pointer"
+                className="px-2 py-2 text-left text-xs font-medium text-gray-500 uppercase tracking-wider cursor-pointer whitespace-nowrap"
                 onClick={() => handleSort(column.key)}
               >
                 <div className="flex items-center">
@@ -42,8 +42,8 @@ const DataTable = ({ columns, data, onEdit, onDelete }) => {
                 </div>
               </th>
             ))}
-            <th scope="col" className="relative px-6 py-3">
-              <span className="sr-only">Actions</span>
+            <th scope="col" className="px-2 py-2 text-right text-xs text-gray-500 uppercase">
+              Actions
             </th>
           </tr>
         </thead>
@@ -51,15 +51,15 @@ const DataTable = ({ columns, data, onEdit, onDelete }) => {
           {sortedData.map((item) => (
             <tr key={item.id} className="hover:bg-gray-50 text-black">
               {columns.map((column) => (
-                <td key={`${item.id}-${column.key}`} className="px-6 py-4 whitespace-nowrap">
+                <td key={`${item.id}-${column.key}`} className="px-2 py-2 whitespace-nowrap">
                   {column.render ? column.render(item) : item[column.key]}
                 </td>
               ))}
-              <td className="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
+              <td className="px-2 py-2 whitespace-nowrap text-right">
                 {onEdit && (
                   <button
                     onClick={() => onEdit(item)}
-                    className="text-indigo-600 hover:text-indigo-900 mr-4"
+                    className="text-indigo-600 hover:text-indigo-900 mr-2 text-sm"
                   >
                     Edit
                   </button>
@@ -67,7 +67,7 @@ const DataTable = ({ columns, data, onEdit, onDelete }) => {
                 {onDelete && (
                   <button
                     onClick={() => onDelete(item)}
-                    className="text-red-600 hover:text-red-900"
+                    className="text-red-600 hover:text-red-900 text-sm"
                   >
                     Delete
                   </button>
