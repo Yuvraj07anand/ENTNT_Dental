@@ -32,10 +32,10 @@ const PatientViewPage = () => {
       {/* Patient Info Card */}
       <div className="bg-white p-6 rounded-lg shadow-lg">
         <h2 className="text-xl font-semibold mb-4 text-black">Patient Info</h2>
-        <p><strong>Name:</strong> {patient.name}</p>
-        <p><strong>DOB:</strong> {new Date(patient.dob).toLocaleDateString()}</p>
-        <p><strong>Contact:</strong> {patient.contact}</p>
-        <p><strong>Health Info:</strong> {patient.healthInfo || 'N/A'}</p>
+        <p className='text-black'><strong>Name:</strong> {patient.name}</p>
+        <p className='text-black'><strong>DOB:</strong> {new Date(patient.dob).toLocaleDateString()}</p>
+        <p className='text-black'><strong>Contact:</strong> {patient.contact}</p>
+        <p className='text-black'><strong>Health Info:</strong> {patient.healthInfo || 'N/A'}</p>
       </div>
 
       {/* Appointments */}
