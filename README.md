@@ -26,8 +26,11 @@ npm
 
 🔧 Setup
 bash
+
 # 1. Clone the repository
 git clone https://github.com/Yuvraj07anand/ENTNT_Dental.git
+
+# 2. Move into the project folder
 cd ENTNT_Dental
 
 # 2. Install dependencies
