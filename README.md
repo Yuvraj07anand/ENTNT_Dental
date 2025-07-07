@@ -1,7 +1,7 @@
-🦷 Entnt Dental Management App
+# 🦷 Entnt Dental Management App
 A lightweight dental clinic management web app built with React, Tailwind CSS, and localStorage for persistent data. It supports patient registration, appointment scheduling, appointment management, file attachments, and appointment history – all in a clean and user-friendly interface.
 
-🚀 Features
+# 🚀 Features
 ✅ Patient Registration and Login (Admin and Patient Roles)
 
 ✅ Admin Dashboard with Appointment Table
@@ -35,7 +35,7 @@ npm install
 
 # 3. Run the app
 npm run dev
-🧠 Architecture
+# 🧠 Architecture
 The Entnt Dental App follows a clean, modular architecture promoting separation of concerns and maintainability.
 
 🔹 1. Component-Based Frontend
@@ -69,7 +69,7 @@ Built using Tailwind CSS for a responsive, utility-first design approach.
 
 Consistent styling for tables, forms, and components.
 
-🧪 Technical Decisions
+# 🧪 Technical Decisions
 React + Context API for State Management Chose Context API for simplicity and native support. AuthContext handles access control. DataContext deals with global data.
 
 Component-Based File Structure Organized by domain features to ensure clarity and scalability.
@@ -84,7 +84,7 @@ File Upload Support Supports both image and PDF uploads, with modal previews for
 
 Form Validation Inline validation includes checks for contact number format, required fields, and password strength.
 
-🐞 Known Issues / Limitations
+# 🐞 Known Issues / Limitations
 LocalStorage Limitations Not suitable for production or multi-user synchronization.
 
 Missing Appointment History View Change logs or full history tracking not yet implemented.
