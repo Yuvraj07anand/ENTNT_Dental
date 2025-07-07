@@ -5,6 +5,7 @@ import { useAuth } from '../../context/AuthContext';
 
 const PatientForm = ({ initialData, onSubmit, onCancel }) => {
   const [formData, setFormData] = useState({
+    id: '',
     name: '',
     email: '',
     password: '',
@@ -20,7 +21,15 @@ const PatientForm = ({ initialData, onSubmit, onCancel }) => {
 
   useEffect(() => {
     if (initialData) {
-      setFormData(initialData);
+      setFormData({
+        id: initialData.id || '',
+        name: initialData.name || '',
+        email: initialData.email || '',
+        password: initialData.password || '',
+        dob: initialData.dob || '',
+        contact: initialData.contact || '',
+        healthInfo: initialData.healthInfo || ''
+      });
     }
   }, [initialData]);
 
@@ -55,18 +64,17 @@ const PatientForm = ({ initialData, onSubmit, onCancel }) => {
   const handleSubmit = (e) => {
     e.preventDefault();
     if (validate()) {
-      const lowerEmail = formData.email.toLowerCase();
+      const lowerEmail = (formData.email || '').toLowerCase();
 
-      // ✅ Block hardcoded admin/patient emails
       if (!initialData && (lowerEmail === 'admin@entnt.in' || lowerEmail === 'patient@entnt.in')) {
         alert('This email is reserved and cannot be used.');
         return;
       }
 
-      // ✅ Check for duplicate patient emails
       const emailExists = patients.some(
-        (p) => p.email?.toLowerCase() === lowerEmail
+        (p) => (p.email || '').toLowerCase() === lowerEmail && (!initialData || p.id !== initialData.id)
       );
+
       if (!initialData && emailExists) {
         alert('A patient with this email already exists.');
         return;
@@ -83,8 +91,9 @@ const PatientForm = ({ initialData, onSubmit, onCancel }) => {
           });
           onSubmit && onSubmit({ ...formData, id: patientId });
         } else {
-          onSubmit && onSubmit(formData);
+          onSubmit && onSubmit({ ...formData, id: initialData.id });
         }
+
         navigate('/patients');
       } catch (error) {
         console.error(error);
