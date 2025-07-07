@@ -36,7 +36,11 @@ const PatientForm = ({ initialData, onSubmit, onCancel }) => {
   const validate = () => {
     const newErrors = {};
     if (!formData.name.trim()) newErrors.name = 'Name is required';
-    if (!formData.dob) newErrors.dob = 'Date of birth is required';
+    if (!formData.dob) {
+  newErrors.dob = 'Date of birth is required';
+} else if (new Date(formData.dob) > new Date()) {
+  newErrors.dob = 'Date of birth cannot be in the future';
+}
     if (!formData.contact.trim()) {
       newErrors.contact = 'Contact information is required';
     } else if (!/^\d{10,}$/.test(formData.contact.replace(/\D/g, ''))) {
